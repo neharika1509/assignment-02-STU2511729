@@ -1,0 +1,9 @@
+Database Recommendation
+
+For a healthcare startup building a core patient management system, I strongly recommend a relational database like MySQL over MongoDB.
+
+Patient records involve highly sensitive, interconnected data (prescriptions, billing, medical history) where absolute accuracy is non-negotiable. Relational databases enforce ACID (Atomicity, Consistency, Isolation, Durability) properties natively, ensuring that every complex transaction—such as updating a patient's medication schedule and billing simultaneously—is reliably processed or fully rolled back if an error occurs. MongoDB, primarily designed as a NoSQL document store, traditionally leans towards BASE semantics (Basically Available, Soft state, Eventual consistency). While modern MongoDB does support multi-document transactions, MySQL's rigid schema enforcement makes it structurally safer for strict medical records.
+
+According to the CAP theorem, a distributed system can only guarantee two of three characteristics: Consistency, Availability, and Partition tolerance. Patient systems must prioritize strong Consistency over absolute Availability. It is much better for a hospital system to temporarily delay a request than to dispense conflicting medication based on a stale, eventually consistent health record.
+
+If the startup needs to add a fraud detection module, my recommendation shifts to a polyglot persistence approach. While MySQL must remain the single source of truth for patient health records, fraud detection requires analyzing massive volumes of unstructured, high-velocity data (like login logs, network IPs, and rapid behavioral patterns). A NoSQL database like MongoDB (or a specialized graph database) would be vastly superior for the high-throughput ingestion and flexible schema required by the fraud detection module, operating entirely parallel to the primary RDBMS.
